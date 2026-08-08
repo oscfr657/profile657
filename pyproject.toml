@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "profile657"
+dynamic = ["version"]
+authors = [
+  { name="Oscar F" },
+]
+description = "A simple Django signup and login app."
+readme = "README.md"
+license = "MIT"
+license-files = [
+  "LICENSE.md",
+]
+requires-python = ">= 3.11"
+dependencies = [
+    "django",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+
+[project.urls]
+repository = "https://github.com/oscfr657/profile657.git"
+
+[tool.setuptools]
+packages = ["profile657"]
+package-dir = {'profile657' = '.'}
+
+[tool.setuptools.package-data]
+profile657 = [
+  './migrations/*',
+  './static/*/*/*',
+  './static/*/*/*/*',
+  './templates/*',
+  './templates/*/*',
+  ]
+
+[tool.setuptools.dynamic]
+version = {file = "VERSION.txt"}
