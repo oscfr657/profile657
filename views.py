@@ -14,7 +14,7 @@ class SignUpView(CreateView):
     template_name = 'registration/signup.html'
 
     def get(self, request, *args, **kwargs):
-        PROFILE657_SIGNUP_LOCKED = getattr(settings, 'PROFILE657_SIGNUP_LOCKED', False)
+        PROFILE657_SIGNUP_LOCKED = getattr(settings, 'PROFILE657_SIGNUP_LOCKED', True)
         if PROFILE657_SIGNUP_LOCKED:
             return redirect(f'{settings.LOGIN_URL}')
         current_lock = get_current_lock()
