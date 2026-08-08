@@ -36,5 +36,5 @@ class CustomLoginView(LoginView):
             context['is_signup_locked'] = True
             return context
         current_lock = get_current_lock()
-        context['is_signup_locked'] = (current_lock or current_lock.password)
+        context['is_signup_locked'] = current_lock or current_lock.password
         return context
