@@ -9,7 +9,8 @@ A simple "vibe coded" Django signup and login app.
 ## Tested with ##
 
 ```
-django==6.0.5
+Python==3.14
+django==6.0.8
 ```
 
 ## Installation ###
@@ -28,6 +29,7 @@ add to the INSTALLED_APPS
 
 ``` python
 INSTALLED_APPS = [
+    'django.contrib.auth',
     'profile657',
 ]
 ```
@@ -50,8 +52,8 @@ and
 
 ``` python
 urlpatterns += [
-    path("accounts/", include("profile657.urls")),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('', include('profile657.urls')),
+    path('', include('django.contrib.auth.urls')),
 ]
 ```
 
@@ -115,6 +117,4 @@ git push
 
 ## TODO: ##
 
-feat: create Django model tests
 feat: Add invite only functionality
-chore: Update setuptools and min python versions
