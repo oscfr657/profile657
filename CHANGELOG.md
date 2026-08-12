@@ -3,7 +3,18 @@
 ## tags ##
 
 ## commits ##
-    
+
+### 12 Aug 2026 ###
+
+    docs: updated CHANGELOG
+    build: version 0.1.0a0
+    chore: Black
+    chore: small improvements of README
+    chore: increased required python version to 12
+    feat: made the views and utils Site aware
+    test: created model tests
+    feat: added ForeignKey Site to Lock model
+
 ### 08 Aug 2026 ###
 
     docs: created a CHANGELOG
