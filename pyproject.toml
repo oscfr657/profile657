@@ -2,7 +2,6 @@
 requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
-
 [project]
 name = "profile657"
 dynamic = ["version"]
@@ -15,7 +14,7 @@ license = "MIT"
 license-files = [
   "LICENSE.md",
 ]
-requires-python = ">= 3.11"
+requires-python = ">= 3.12"
 dependencies = [
     "django",
 ]
@@ -27,8 +26,9 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
