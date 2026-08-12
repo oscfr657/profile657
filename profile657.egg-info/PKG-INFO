@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: profile657
-Version: 0.0.1a0
+Version: 0.1.0a0
 Summary: A simple Django signup and login app.
 Author: Oscar F
 License-Expression: MIT
@@ -12,11 +12,12 @@ Classifier: Intended Audience :: Developers
 Classifier: Operating System :: OS Independent
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3 :: Only
-Classifier: Programming Language :: Python :: 3.11
 Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
 Classifier: Topic :: Internet :: WWW/HTTP
 Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
-Requires-Python: >=3.11
+Requires-Python: >=3.12
 Description-Content-Type: text/markdown
 License-File: LICENSE.md
 Requires-Dist: django
@@ -33,7 +34,8 @@ A simple "vibe coded" Django signup and login app.
 ## Tested with ##
 
 ```
-django==6.0.5
+Python==3.14
+django==6.0.8
 ```
 
 ## Installation ###
@@ -52,6 +54,7 @@ add to the INSTALLED_APPS
 
 ``` python
 INSTALLED_APPS = [
+    'django.contrib.auth',
     'profile657',
 ]
 ```
@@ -74,8 +77,8 @@ and
 
 ``` python
 urlpatterns += [
-    path("accounts/", include("profile657.urls")),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('', include('profile657.urls')),
+    path('', include('django.contrib.auth.urls')),
 ]
 ```
 
@@ -109,8 +112,8 @@ python manage.py migrate
 python3 -m venv env
 source env/bin/activate
 python -m pip install black
-python -m black . -S -t py311 -t py312 -t py313 --extend-exclude .migrations --diff
-python -m black . -S -t py311 -t py312 -t py313 --extend-exclude .migrations
+python -m black . -S -t py312 -t py313 -t py314 --extend-exclude .migrations --diff
+python -m black . -S -t py312 -t py313 -t py314 --extend-exclude .migrations
 ```
 
 #### Run tests ####
@@ -139,6 +142,4 @@ git push
 
 ## TODO: ##
 
-feat: create Django model tests
 feat: Add invite only functionality
-chore: Update setuptools and min python versions
