@@ -8,7 +8,7 @@ def get_current_lock(site):
     current_locks = Lock.objects.filter(
         Q(startdate__lte=now),
         Q(enddate__gte=now) | Q(enddate__isnull=True),
-        Q(site=site)
+        Q(site=site),
     )
     current_lock = current_locks.order_by('-startdate').first()
     return current_lock
