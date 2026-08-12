@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.sites.models import Site
 
 
 class Lock(models.Model):
@@ -8,9 +9,13 @@ class Lock(models.Model):
     password = models.CharField(
         max_length=128, verbose_name='Password', null=True, blank=True
     )
+    site = models.ForeignKey(
+        Site, on_delete=models.CASCADE, related_name='+', null=True, blank=True
+    )
 
     def save(self, *args, **kwargs):
-        self.password = slugify(self.password)
+        if self.password:
+            self.password = slugify(self.password)
         super().save(*args, **kwargs)
 
     def __str__(self):
