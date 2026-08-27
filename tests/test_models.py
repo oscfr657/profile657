@@ -21,9 +21,7 @@ class KeyModelTests(TestCase):
 
     def test_save_method_slugifies_password(self):
         """Tests that the password is slugified when the model is saved."""
-        key = Key.objects.create(
-            startdate=self.now, password="My Secret Password! 123"
-        )
+        key = Key.objects.create(startdate=self.now, password="My Secret Password! 123")
         self.assertEqual(key.password, "my-secret-password-123")
 
     def test_save_method_with_none_password(self):
