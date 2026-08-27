@@ -4,6 +4,15 @@
 
 ## commits ##
 
+### 27 Aug 2026 ###
+
+    docs: updated CHANGELOG
+    build: version 0.2.0a0
+    chore: Black
+    docs: added email settings example to README.md
+    test: Changed from testing Lock model to testing Key model
+    feat: Lock model is now a Key model to unlock PROFILE657_SIGNUP_LOCKED
+
 ### 12 Aug 2026 ###
 
     docs: updated CHANGELOG
