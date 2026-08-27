@@ -18,6 +18,8 @@ views.py
 ./views.py
 ./migrations/0001_initial.py
 ./migrations/0002_lock_site.py
+./migrations/0003_rename_lock_key.py
+./migrations/0004_alter_key_site.py
 ./migrations/__init__.py
 ./templates/registration/logged_out.html
 ./templates/registration/login.html
@@ -29,6 +31,8 @@ views.py
 ./templates/registration/signup.html
 migrations/0001_initial.py
 migrations/0002_lock_site.py
+migrations/0003_rename_lock_key.py
+migrations/0004_alter_key_site.py
 migrations/__init__.py
 profile657.egg-info/PKG-INFO
 profile657.egg-info/SOURCES.txt
