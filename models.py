@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from django.contrib.sites.models import Site
 
 
-class Lock(models.Model):
+class Key(models.Model):
     startdate = models.DateTimeField(verbose_name='Start date')
     enddate = models.DateTimeField(verbose_name='End date', null=True, blank=True)
     password = models.CharField(
@@ -22,4 +22,4 @@ class Lock(models.Model):
         end_str = (
             self.enddate.strftime('%Y-%m-%d %H:%M') if self.enddate else 'indefinitely'
         )
-        return f'Lock ({self.startdate.strftime('%Y-%m-%d %H:%M')} to {end_str})'
+        return f'Key ({self.startdate.strftime('%Y-%m-%d %H:%M')} to {end_str})'

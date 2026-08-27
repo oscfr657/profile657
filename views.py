@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.shortcuts import redirect
 
-from .utils import get_current_lock
+from .utils import get_current_key
 
 try:
     from wagtail.models import Site as WagtailSite
@@ -32,15 +32,19 @@ class SignUpView(CreateView):
     def get(self, request, *args, **kwargs):
         PROFILE657_SIGNUP_LOCKED = getattr(settings, 'PROFILE657_SIGNUP_LOCKED', True)
         if PROFILE657_SIGNUP_LOCKED:
-            return redirect(f'{settings.LOGIN_URL}')
-        current_site = get_django_site(request)
-        current_lock = get_current_lock(current_site)
-        if current_lock:
-            if current_lock.password:
-                password = self.kwargs.get('password', None)
-                if password and password == current_lock.password:
+            current_site = get_django_site(request)
+            current_key = get_current_key(current_site)
+            if current_key:
+                if current_key.password:
+                    password = self.kwargs.get('password', None)
+                    if password and password == current_key.password:
+                        return super().get(request, *args, **kwargs)
+                    else:
+                        return redirect(f'{settings.LOGIN_URL}')
+                else:
                     return super().get(request, *args, **kwargs)
-            return redirect(f'{settings.LOGIN_URL}')
+            else:
+                return redirect(f'{settings.LOGIN_URL}')
         return super().get(request, *args, **kwargs)
 
 
@@ -48,11 +52,21 @@ class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
 
     def get_context_data(self, **kwargs):
+        PROFILE657_SIGNUP_LOCKED = getattr(settings, 'PROFILE657_SIGNUP_LOCKED', True)
         context = super().get_context_data(**kwargs)
-        if settings.PROFILE657_SIGNUP_LOCKED:
-            context['is_signup_locked'] = True
-            return context
-        current_site = get_django_site(self.request)
-        current_lock = get_current_lock(current_site)
-        context['is_signup_locked'] = current_lock
+        is_signup_locked = True
+        if PROFILE657_SIGNUP_LOCKED:
+            current_site = get_django_site(self.request)
+            current_key = get_current_key(current_site)
+            if current_key:
+                if current_key.password:
+                    is_signup_locked = True
+                else:
+                    is_signup_locked = False
+            else:
+                is_signup_locked = True
+            context['is_signup_locked'] = is_signup_locked
+        else:
+            is_signup_locked = False
+        context['is_signup_locked'] = is_signup_locked
         return context

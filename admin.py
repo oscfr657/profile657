@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.utils import timezone
-from .models import Lock
+from .models import Key
 
 
-@admin.register(Lock)
-class LockAdmin(admin.ModelAdmin):
+@admin.register(Key)
+class KeyAdmin(admin.ModelAdmin):
     list_display = ('id', 'startdate', 'enddate', 'is_active')
     list_display_links = ('id', 'startdate')
     list_filter = ('startdate', 'enddate')
