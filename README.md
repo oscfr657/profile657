@@ -37,7 +37,7 @@ INSTALLED_APPS = [
 and 
 
 ``` python
-PROFILE657_SIGNUP_LOCKED = False
+PROFILE657_SIGNUP_LOCKED = True
 ```
 
 ### Django url ###
@@ -68,6 +68,25 @@ python manage.py migrate
 
 ``` bash
 python manage.py collectstatic
+```
+
+### Email settings ###
+
+set email settings
+
+``` python
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.example.com"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "host@example.com"
+EMAIL_HOST_PASSWORD = "password"
+DEFAULT_FROM_EMAIL = 'host@example.com'
+SERVER_EMAIL = 'server@example.com'
+ADMINS = (
+  ('Login Admin', 'login@example.com'),
+)
+EMAIL_USE_TLS = True
+#EMAIL_USE_SSL = True
 ```
 
 ## For development ##
