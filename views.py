@@ -30,7 +30,7 @@ def get_django_site(request):
 class SignUpView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
-    template_name = 'registration/signup.html'
+    template_name = 'profile657/signup.html'
 
     def get(self, request, *args, **kwargs):
         PROFILE657_SIGNUP_LOCKED = getattr(settings, 'PROFILE657_SIGNUP_LOCKED', True)
@@ -52,7 +52,7 @@ class SignUpView(CreateView):
 
 
 class CustomLoginView(LoginView):
-    template_name = 'registration/login.html'
+    template_name = 'profile657/login.html'
 
     def get_context_data(self, **kwargs):
         PROFILE657_SIGNUP_LOCKED = getattr(settings, 'PROFILE657_SIGNUP_LOCKED', True)
