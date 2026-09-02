@@ -4,6 +4,16 @@
 
 ## commits ##
 
+### 02 Sep 2026 ###
+
+    docs: updated CHANGELOG
+    build: version 0.3.0a0
+    chore: Black
+    test: added view tests
+    feat: added email requirement at signup
+    bug: custom templates not used
+    feat: added the possibility to update the email
+
 ### 27 Aug 2026 ###
 
     docs: updated CHANGELOG
