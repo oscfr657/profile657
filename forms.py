@@ -7,8 +7,7 @@ User = get_user_model()
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(
-        required=True, 
-        help_text="Required to reset your password if necessary."
+        required=True, help_text="Required to reset your password if necessary."
     )
 
     class Meta(UserCreationForm.Meta):
@@ -20,12 +19,13 @@ class EmailUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email']
-        labels = {
-            'email': 'E-mail'
-        }
-    
+        labels = {'email': 'E-mail'}
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if email and User.objects.exclude(pk=self.instance.pk).filter(email=email).exists():
+        if (
+            email
+            and User.objects.exclude(pk=self.instance.pk).filter(email=email).exists()
+        ):
             raise forms.ValidationError('The e-mailadress is wrong.')
         return email
