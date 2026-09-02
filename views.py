@@ -1,4 +1,3 @@
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.contrib.sites.models import Site
 from django.contrib.sites.shortcuts import get_current_site
@@ -9,7 +8,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .forms import EmailUpdateForm
+from .forms import EmailUpdateForm, CustomUserCreationForm
 from .utils import get_current_key
 
 try:
@@ -28,7 +27,7 @@ def get_django_site(request):
 
 
 class SignUpView(CreateView):
-    form_class = UserCreationForm
+    form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'profile657/signup.html'
 
