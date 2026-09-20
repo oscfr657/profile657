@@ -1,7 +1,13 @@
 from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
 
-from .views import SignUpView, CustomLoginView, update_email_view
+from .views import (
+    SignUpView,
+    CustomLoginView,
+    update_email_view,
+    managed_users_view,
+    reset_delegated_password_view
+)
 
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
@@ -38,4 +44,10 @@ urlpatterns = [
         ),
         name='password_reset_complete',
     ),
+    path('managed-users/', managed_users_view, name='managed_users'),
+    path(
+        'managed-users/<int:user_id>/reset-password/',
+         reset_delegated_password_view,
+         name='reset_delegated_password'
+         ),
 ]

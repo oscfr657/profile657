@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h2>Users You Manage</h2>
+    {% if delegations %}
+        <p>Below is a list of users who have granted you permission to reset their password.</p>
+        <ul>
+            {% for delegation in delegations %}
+                <li>
+                    <div>
+                        <strong>{{ delegation.user.username }}</strong>
+                        <br>
+                        <small>{{ delegation.user.email }}</small>
+                    </div>
+                    <a href="{% url 'reset_delegated_password' delegation.user.id %}">
+                        Change Password
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div>
+            You currently have no users assigned to your account for password management.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

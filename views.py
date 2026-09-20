@@ -1,13 +1,20 @@
-from django.contrib.auth.views import LoginView
-from django.contrib.sites.models import Site
-from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
+from django.http import Http404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
+
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+
+from django.contrib.sites.models import Site
+from django.contrib.sites.shortcuts import get_current_site
+
 from django.contrib import messages
 
+from .models import PasswordDelegation
 from .forms import EmailUpdateForm, CustomUserCreationForm
 from .utils import get_current_key
 
@@ -15,6 +22,9 @@ try:
     from wagtail.models import Site as WagtailSite
 except:
     pass
+
+
+User = get_user_model()
 
 
 def get_django_site(request):
@@ -84,5 +94,36 @@ def update_email_view(request):
             return redirect('update_email')
     else:
         form = EmailUpdateForm(instance=request.user)
-
     return render(request, 'profile657/update_email.html', {'form': form})
+
+
+@login_required
+def managed_users_view(request):
+    if not getattr(settings, 'PROFILE657_PASSWORD_DELEGATION', False):
+        raise Http404("This feature is disabled.")
+
+    delegations = PasswordDelegation.objects.filter(trusted_user=request.user)
+    return render(request, 'profile657/managed_users.html', {'delegations': delegations})
+
+
+@login_required
+def reset_delegated_password_view(request, user_id):
+    if not getattr(settings, 'PROFILE657_PASSWORD_DELEGATION', False):
+        raise Http404("This feature is disabled.")
+
+    delegation = get_object_or_404(PasswordDelegation, user_id=user_id, trusted_user=request.user)
+    target_user = delegation.user
+
+    if request.method == 'POST':
+        form = SetPasswordForm(target_user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Password for {target_user.username} has been updated.")
+            return redirect('managed_users')
+    else:
+        form = SetPasswordForm(target_user)
+
+    return render(request, 'profile657/reset_delegated_password.html', {
+        'form': form,
+        'target_user': target_user
+    })
