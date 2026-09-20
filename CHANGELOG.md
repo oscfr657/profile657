@@ -4,6 +4,16 @@
 
 ## commits ##
 
+### 20 Sep 2026 ###
+
+    docs: updated CHANGELOG and README
+    build: version 0.4.0a0
+    chore: Black
+    test: added view tests for managed_users_view and reset_delegated_password_view
+    feat: added managed_users_view and reset_delegated_password_view and related urls and templates
+    feat: updated CustomUserCreationForm with a trusted_manager_email
+    feat: added a PasswordDelegation model and admin
+
 ### 02 Sep 2026 ###
 
     docs: updated CHANGELOG

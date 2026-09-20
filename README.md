@@ -38,6 +38,7 @@ and
 
 ``` python
 PROFILE657_SIGNUP_LOCKED = True
+PROFILE657_PASSWORD_DELEGATION = True
 ```
 
 ### Django url ###
