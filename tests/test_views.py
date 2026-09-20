@@ -1,6 +1,9 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+
+from profile657.models import PasswordDelegation
+
 
 User = get_user_model()
 
@@ -166,3 +169,158 @@ class UpdateEmailTests(TestCase):
         # Make sure that the database was not changed
         self.user.refresh_from_db()
         self.assertEqual(self.user.email, 'old@example.com')
+
+
+class PasswordDelegationTests(TestCase):
+    def setUp(self):
+        self.signup_url = reverse('signup')
+        self.managed_users_url = reverse('managed_users')
+        
+        self.manager_password = 'ManagerPassword123!'
+        self.manager = User.objects.create_user(
+            username='manageruser',
+            email='manager@example.com',
+            password=self.manager_password
+        )
+
+        self.other_user = User.objects.create_user(
+            username='otheruser',
+            email='other@example.com',
+            password='OtherPassword123!'
+        )
+
+    @override_settings(PROFILE657_PASSWORD_DELEGATION=True)
+    def test_signup_with_valid_trusted_manager_email(self):
+        """Tests that a delegation is created when signing up with a valid manager email."""
+        data = {
+            'username': 'newsubuser',
+            'email': 'newsub@example.com',
+            'password1': 'SubPassword123!',
+            'password2': 'SubPassword123!',
+            'trusted_manager_email': self.manager.email
+        }
+        response = self.client.post(self.signup_url, data)
+        self.assertEqual(response.status_code, 302)
+
+        new_user = User.objects.get(username='newsubuser')
+        
+        delegation_exists = PasswordDelegation.objects.filter(
+            user=new_user, 
+            trusted_user=self.manager
+        ).exists()
+        self.assertTrue(delegation_exists)
+
+    @override_settings(PROFILE657_PASSWORD_DELEGATION=True)
+    def test_signup_with_non_existing_trusted_manager_email(self):
+        """Tests that sign up fails if the provided manager email does not exist."""
+        data = {
+            'username': 'newsubuser',
+            'email': 'newsub@example.com',
+            'password1': 'SubPassword123!',
+            'password2': 'SubPassword123!',
+            'trusted_manager_email': 'nonexistent@example.com'
+        }
+        response = self.client.post(self.signup_url, data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context['form'], 
+            'trusted_manager_email', 
+            'No user was found with this email address.'
+        )
+
+        self.assertFalse(User.objects.filter(username='newsubuser').exists())
+
+    @override_settings(PROFILE657_PASSWORD_DELEGATION=False)
+    def test_signup_when_delegation_disabled(self):
+        """Tests that the delegation field is ignored and no delegation is created when disabled in settings."""
+        data = {
+            'username': 'newsubuser',
+            'email': 'newsub@example.com',
+            'password1': 'SubPassword123!',
+            'password2': 'SubPassword123!',
+            'trusted_manager_email': self.manager.email
+        }
+        response = self.client.post(self.signup_url, data)
+        self.assertEqual(response.status_code, 302)
+
+        new_user = User.objects.get(username='newsubuser')
+
+        self.assertFalse(PasswordDelegation.objects.filter(user=new_user).exists())
+
+    # ------------------------------------------------------------------
+    # Tests for Views (Managing Users & Password Reset)
+    # ------------------------------------------------------------------
+
+    @override_settings(PROFILE657_PASSWORD_DELEGATION=True)
+    def test_managed_users_view_authenticated(self):
+        """Tests that a logged in manager can view their list of managed users."""
+        sub_user = User.objects.create_user(
+            username='subuser', 
+            email='subuser@example.com', 
+            password='SubPassword123!'
+        )
+        PasswordDelegation.objects.create(user=sub_user, trusted_user=self.manager)
+
+        self.client.login(username='manageruser', password=self.manager_password)
+
+        response = self.client.get(self.managed_users_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'profile657/managed_users.html')
+        self.assertContains(response, 'subuser')
+
+    @override_settings(PROFILE657_PASSWORD_DELEGATION=True)
+    def test_reset_delegated_password_success(self):
+        """Tests that a manager can reset the password for a delegated user."""
+        sub_user = User.objects.create_user(
+            username='subuser', 
+            email='subuser@example.com', 
+            password='OldPassword123!'
+        )
+        PasswordDelegation.objects.create(user=sub_user, trusted_user=self.manager)
+
+        self.client.login(username='manageruser', password=self.manager_password)
+
+        reset_url = reverse('reset_delegated_password', kwargs={'user_id': sub_user.id})
+
+        new_password = 'BrandNewPassword123!'
+        data = {
+            'new_password1': new_password,
+            'new_password2': new_password,
+        }
+        response = self.client.post(reset_url, data)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, self.managed_users_url)
+
+        sub_login_success = self.client.login(username='subuser', password=new_password)
+        self.assertTrue(sub_login_success)
+
+    @override_settings(PROFILE657_PASSWORD_DELEGATION=True)
+    def test_reset_delegated_password_unauthorized(self):
+        """Tests that a user cannot reset password for someone who hasn't delegated to them."""
+        sub_user = User.objects.create_user(
+            username='subuser', 
+            email='subuser@example.com', 
+            password='Password123!'
+        )
+        PasswordDelegation.objects.create(user=sub_user, trusted_user=self.manager)
+
+        self.client.login(username='otheruser', password='OtherPassword123!')
+        
+        reset_url = reverse('reset_delegated_password', kwargs={'user_id': sub_user.id})
+        response = self.client.get(reset_url)
+
+        self.assertEqual(response.status_code, 404)
+
+    @override_settings(PROFILE657_PASSWORD_DELEGATION=False)
+    def test_views_return_404_when_disabled(self):
+        """Tests that delegation views return 404 HTTP status when the setting is False."""
+        self.client.login(username='manageruser', password=self.manager_password)
+
+        response = self.client.get(self.managed_users_url)
+        self.assertEqual(response.status_code, 404)
+
+        reset_url = reverse('reset_delegated_password', kwargs={'user_id': self.other_user.id})
+        response = self.client.get(reset_url)
+        self.assertEqual(response.status_code, 404)
