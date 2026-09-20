@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: profile657
-Version: 0.3.0a0
+Version: 0.4.0a0
 Summary: A simple Django signup and login app.
 Author: Oscar F
 License-Expression: MIT
@@ -63,6 +63,7 @@ and
 
 ``` python
 PROFILE657_SIGNUP_LOCKED = True
+PROFILE657_PASSWORD_DELEGATION = True
 ```
 
 ### Django url ###
