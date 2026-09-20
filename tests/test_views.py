@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 
 from profile657.models import PasswordDelegation
 
-
 User = get_user_model()
 
 
@@ -175,18 +174,18 @@ class PasswordDelegationTests(TestCase):
     def setUp(self):
         self.signup_url = reverse('signup')
         self.managed_users_url = reverse('managed_users')
-        
+
         self.manager_password = 'ManagerPassword123!'
         self.manager = User.objects.create_user(
             username='manageruser',
             email='manager@example.com',
-            password=self.manager_password
+            password=self.manager_password,
         )
 
         self.other_user = User.objects.create_user(
             username='otheruser',
             email='other@example.com',
-            password='OtherPassword123!'
+            password='OtherPassword123!',
         )
 
     @override_settings(PROFILE657_PASSWORD_DELEGATION=True)
@@ -197,16 +196,15 @@ class PasswordDelegationTests(TestCase):
             'email': 'newsub@example.com',
             'password1': 'SubPassword123!',
             'password2': 'SubPassword123!',
-            'trusted_manager_email': self.manager.email
+            'trusted_manager_email': self.manager.email,
         }
         response = self.client.post(self.signup_url, data)
         self.assertEqual(response.status_code, 302)
 
         new_user = User.objects.get(username='newsubuser')
-        
+
         delegation_exists = PasswordDelegation.objects.filter(
-            user=new_user, 
-            trusted_user=self.manager
+            user=new_user, trusted_user=self.manager
         ).exists()
         self.assertTrue(delegation_exists)
 
@@ -218,15 +216,15 @@ class PasswordDelegationTests(TestCase):
             'email': 'newsub@example.com',
             'password1': 'SubPassword123!',
             'password2': 'SubPassword123!',
-            'trusted_manager_email': 'nonexistent@example.com'
+            'trusted_manager_email': 'nonexistent@example.com',
         }
         response = self.client.post(self.signup_url, data)
 
         self.assertEqual(response.status_code, 200)
         self.assertFormError(
-            response.context['form'], 
-            'trusted_manager_email', 
-            'No user was found with this email address.'
+            response.context['form'],
+            'trusted_manager_email',
+            'No user was found with this email address.',
         )
 
         self.assertFalse(User.objects.filter(username='newsubuser').exists())
@@ -239,7 +237,7 @@ class PasswordDelegationTests(TestCase):
             'email': 'newsub@example.com',
             'password1': 'SubPassword123!',
             'password2': 'SubPassword123!',
-            'trusted_manager_email': self.manager.email
+            'trusted_manager_email': self.manager.email,
         }
         response = self.client.post(self.signup_url, data)
         self.assertEqual(response.status_code, 302)
@@ -256,9 +254,7 @@ class PasswordDelegationTests(TestCase):
     def test_managed_users_view_authenticated(self):
         """Tests that a logged in manager can view their list of managed users."""
         sub_user = User.objects.create_user(
-            username='subuser', 
-            email='subuser@example.com', 
-            password='SubPassword123!'
+            username='subuser', email='subuser@example.com', password='SubPassword123!'
         )
         PasswordDelegation.objects.create(user=sub_user, trusted_user=self.manager)
 
@@ -273,9 +269,7 @@ class PasswordDelegationTests(TestCase):
     def test_reset_delegated_password_success(self):
         """Tests that a manager can reset the password for a delegated user."""
         sub_user = User.objects.create_user(
-            username='subuser', 
-            email='subuser@example.com', 
-            password='OldPassword123!'
+            username='subuser', email='subuser@example.com', password='OldPassword123!'
         )
         PasswordDelegation.objects.create(user=sub_user, trusted_user=self.manager)
 
@@ -300,14 +294,12 @@ class PasswordDelegationTests(TestCase):
     def test_reset_delegated_password_unauthorized(self):
         """Tests that a user cannot reset password for someone who hasn't delegated to them."""
         sub_user = User.objects.create_user(
-            username='subuser', 
-            email='subuser@example.com', 
-            password='Password123!'
+            username='subuser', email='subuser@example.com', password='Password123!'
         )
         PasswordDelegation.objects.create(user=sub_user, trusted_user=self.manager)
 
         self.client.login(username='otheruser', password='OtherPassword123!')
-        
+
         reset_url = reverse('reset_delegated_password', kwargs={'user_id': sub_user.id})
         response = self.client.get(reset_url)
 
@@ -321,6 +313,8 @@ class PasswordDelegationTests(TestCase):
         response = self.client.get(self.managed_users_url)
         self.assertEqual(response.status_code, 404)
 
-        reset_url = reverse('reset_delegated_password', kwargs={'user_id': self.other_user.id})
+        reset_url = reverse(
+            'reset_delegated_password', kwargs={'user_id': self.other_user.id}
+        )
         response = self.client.get(reset_url)
         self.assertEqual(response.status_code, 404)

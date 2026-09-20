@@ -22,10 +22,10 @@ class KeyAdmin(admin.ModelAdmin):
 class PasswordDelegationAdmin(admin.ModelAdmin):
     list_display = ('user', 'get_user_email', 'trusted_user', 'get_trusted_user_email')
     search_fields = (
-        'user__username', 
-        'user__email', 
-        'trusted_user__username', 
-        'trusted_user__email'
+        'user__username',
+        'user__email',
+        'trusted_user__username',
+        'trusted_user__email',
     )
     raw_id_fields = ('user', 'trusted_user')
 

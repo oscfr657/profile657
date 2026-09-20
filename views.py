@@ -103,7 +103,9 @@ def managed_users_view(request):
         raise Http404("This feature is disabled.")
 
     delegations = PasswordDelegation.objects.filter(trusted_user=request.user)
-    return render(request, 'profile657/managed_users.html', {'delegations': delegations})
+    return render(
+        request, 'profile657/managed_users.html', {'delegations': delegations}
+    )
 
 
 @login_required
@@ -111,19 +113,24 @@ def reset_delegated_password_view(request, user_id):
     if not getattr(settings, 'PROFILE657_PASSWORD_DELEGATION', False):
         raise Http404("This feature is disabled.")
 
-    delegation = get_object_or_404(PasswordDelegation, user_id=user_id, trusted_user=request.user)
+    delegation = get_object_or_404(
+        PasswordDelegation, user_id=user_id, trusted_user=request.user
+    )
     target_user = delegation.user
 
     if request.method == 'POST':
         form = SetPasswordForm(target_user, request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, f"Password for {target_user.username} has been updated.")
+            messages.success(
+                request, f"Password for {target_user.username} has been updated."
+            )
             return redirect('managed_users')
     else:
         form = SetPasswordForm(target_user)
 
-    return render(request, 'profile657/reset_delegated_password.html', {
-        'form': form,
-        'target_user': target_user
-    })
+    return render(
+        request,
+        'profile657/reset_delegated_password.html',
+        {'form': form, 'target_user': target_user},
+    )

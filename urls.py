@@ -6,7 +6,7 @@ from .views import (
     CustomLoginView,
     update_email_view,
     managed_users_view,
-    reset_delegated_password_view
+    reset_delegated_password_view,
 )
 
 urlpatterns = [
@@ -47,7 +47,7 @@ urlpatterns = [
     path('managed-users/', managed_users_view, name='managed_users'),
     path(
         'managed-users/<int:user_id>/reset-password/',
-         reset_delegated_password_view,
-         name='reset_delegated_password'
-         ),
+        reset_delegated_password_view,
+        name='reset_delegated_password',
+    ),
 ]

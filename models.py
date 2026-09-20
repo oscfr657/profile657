@@ -33,4 +33,6 @@ class PasswordDelegation(models.Model):
     trusted_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
 
     def __str__(self):
-        return f"{self.trusted_user.username} manages passwords for {self.user.username}"
+        return (
+            f"{self.trusted_user.username} manages passwords for {self.user.username}"
+        )
