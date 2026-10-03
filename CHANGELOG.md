@@ -4,6 +4,18 @@
 
 ## commits ##
 
+### 03 Okt 2026 ###
+
+    docs: updated CHANGELOG
+    build: version 0.5.0a0
+    chore: Black
+    chore: improved template code and design
+    feat: added cancel button to action forms
+    feat: added profile link to managed_users template
+    feat: added the logged_out template to the logout url
+    feat: created a profile page
+
+
 ### 20 Sep 2026 ###
 
     docs: updated CHANGELOG and README
