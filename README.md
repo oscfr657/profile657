@@ -140,5 +140,5 @@ git push
 
 ## TODO: ##
 
-feat: Add invites to Key model.
 feat: make settings site aware
+feat: internationalization

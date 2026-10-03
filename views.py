@@ -48,6 +48,16 @@ class SignUpView(CreateView):
         if PROFILE657_SIGNUP_LOCKED:
             current_site = get_django_site(request)
             current_key = get_current_key(current_site)
+            if (
+                current_key
+                and current_key.invites is not None
+                and current_key.invites <= 0
+            ):
+                messages.error(
+                    request,
+                    "Registration is currently closed because the invitation quota is exhausted.",
+                )
+                return redirect(f'{settings.LOGIN_URL}')
             if current_key:
                 if current_key.password:
                     password = self.kwargs.get('password', None)
@@ -61,6 +71,22 @@ class SignUpView(CreateView):
                 return redirect(f'{settings.LOGIN_URL}')
         return super().get(request, *args, **kwargs)
 
+    def form_valid(self, form):
+        current_site = get_django_site(self.request)
+        current_key = get_current_key(current_site)
+
+        if current_key and current_key.invites is not None:
+            if current_key.invites <= 0:
+                form.add_error(
+                    None, "Unfortunately, the invitation quota has been exhausted."
+                )
+                return self.form_invalid(form)
+            response = super().form_valid(form)
+            current_key.invites -= 1
+            current_key.save()
+            return response
+        return super().form_valid(form)
+
 
 class CustomLoginView(LoginView):
     template_name = 'profile657/login.html'
@@ -73,7 +99,9 @@ class CustomLoginView(LoginView):
             current_site = get_django_site(self.request)
             current_key = get_current_key(current_site)
             if current_key:
-                if current_key.password:
+                if current_key.invites is not None and current_key.invites <= 0:
+                    is_signup_locked = True
+                elif current_key.password:
                     is_signup_locked = True
                 else:
                     is_signup_locked = False
