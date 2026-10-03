@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Profile</h2>
+    <p>You are logged in as: <strong>{{ user.username }}</strong>.</p>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Log out</button>
+    </form>
+    <ul>
+        <li>
+            <a href="{% url 'profile657:update_email' %}">Update email</a>
+        </li>
+        <li>
+            <a href="{% url 'profile657:password_reset' %}">Reset password</a>
+        </li>
+        {% if delegation_on %}
+        <li>
+            <a href="{% url 'profile657:managed_users' %}">Help users</a>
+        </li>
+        {% endif %}
+    </ul>
+{% endblock %}

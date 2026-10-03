@@ -4,10 +4,14 @@ from django.contrib.auth import views as auth_views
 from .views import (
     SignUpView,
     CustomLoginView,
+    profile_view,
     update_email_view,
     managed_users_view,
     reset_delegated_password_view,
 )
+
+
+app_name = 'profile657'
 
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
@@ -15,6 +19,7 @@ urlpatterns = [
         r'signup/(?P<password>[a-zA-Z0-9-]*)/$', SignUpView.as_view(), name='signup'
     ),
     path('login/', CustomLoginView.as_view(), name='login'),
+    path('profile/', profile_view, name='profile'),
     path('update-email/', update_email_view, name='update_email'),
     path(
         'password_reset/',

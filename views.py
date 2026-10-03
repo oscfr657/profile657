@@ -42,6 +42,8 @@ class SignUpView(CreateView):
     template_name = 'profile657/signup.html'
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(f'profile657:profile')
         PROFILE657_SIGNUP_LOCKED = getattr(settings, 'PROFILE657_SIGNUP_LOCKED', True)
         if PROFILE657_SIGNUP_LOCKED:
             current_site = get_django_site(request)
@@ -82,6 +84,17 @@ class CustomLoginView(LoginView):
             is_signup_locked = False
         context['is_signup_locked'] = is_signup_locked
         return context
+    
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(f'profile657:profile')
+        return super().get(request, *args, **kwargs)
+
+
+@login_required
+def profile_view(request):
+    delegation_on = getattr(settings, 'PROFILE657_PASSWORD_DELEGATION', False)
+    return render(request, 'profile657/profile.html', {delegation_on: delegation_on})
 
 
 @login_required
@@ -91,7 +104,7 @@ def update_email_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Your e-mail have been updated!")
-            return redirect('update_email')
+            return redirect('profile657:update_email')
     else:
         form = EmailUpdateForm(instance=request.user)
     return render(request, 'profile657/update_email.html', {'form': form})
@@ -125,7 +138,7 @@ def reset_delegated_password_view(request, user_id):
             messages.success(
                 request, f"Password for {target_user.username} has been updated."
             )
-            return redirect('managed_users')
+            return redirect('profile657:managed_users')
     else:
         form = SetPasswordForm(target_user)
 

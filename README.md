@@ -39,6 +39,9 @@ and
 ``` python
 PROFILE657_SIGNUP_LOCKED = True
 PROFILE657_PASSWORD_DELEGATION = True
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/profile/'
 ```
 
 ### Django url ###
@@ -137,4 +140,5 @@ git push
 
 ## TODO: ##
 
-feat: Add invite only functionality
+feat: Add invites to Key model.
+feat: make settings site aware
