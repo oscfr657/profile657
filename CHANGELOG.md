@@ -4,8 +4,17 @@
 
 ## commits ##
 
+### 04 Okt 2026 ###
+
+    docs: updated CHANGELOG
+    build: version 0.6.0a0
+    test: improved and fixed some tests
+
 ### 03 Okt 2026 ###
 
+    feat: added invite logik to the signup proccess
+    feat: added invites to Key model and admin
+    doc: README.md now defaults to PROFILE657_PASSWORD_DELEGATION = False
     docs: updated CHANGELOG
     build: version 0.5.0a0
     chore: Black
@@ -14,7 +23,6 @@
     feat: added profile link to managed_users template
     feat: added the logged_out template to the logout url
     feat: created a profile page
-
 
 ### 20 Sep 2026 ###
 
