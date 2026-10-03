@@ -21,6 +21,12 @@ urlpatterns = [
     path('login/', CustomLoginView.as_view(), name='login'),
     path('profile/', profile_view, name='profile'),
     path('update-email/', update_email_view, name='update_email'),
+    path('managed-users/', managed_users_view, name='managed_users'),
+    path(
+        'managed-users/<int:user_id>/reset-password/',
+        reset_delegated_password_view,
+        name='reset_delegated_password',
+    ),
     path(
         'password_reset/',
         auth_views.PasswordResetView.as_view(
@@ -49,10 +55,11 @@ urlpatterns = [
         ),
         name='password_reset_complete',
     ),
-    path('managed-users/', managed_users_view, name='managed_users'),
     path(
-        'managed-users/<int:user_id>/reset-password/',
-        reset_delegated_password_view,
-        name='reset_delegated_password',
+        'logout/',
+        auth_views.LogoutView.as_view(
+            template_name='profile657/logged_out.html'
+            ),
+        name='logout',
     ),
 ]
