@@ -32,6 +32,7 @@ views.py
 ./templates/profile657/password_reset_done.html
 ./templates/profile657/password_reset_email.html
 ./templates/profile657/password_reset_form.html
+./templates/profile657/profile.html
 ./templates/profile657/reset_delegated_password.html
 ./templates/profile657/signup.html
 ./templates/profile657/update_email.html
@@ -54,6 +55,7 @@ templates/profile657/password_reset_confirm.html
 templates/profile657/password_reset_done.html
 templates/profile657/password_reset_email.html
 templates/profile657/password_reset_form.html
+templates/profile657/profile.html
 templates/profile657/reset_delegated_password.html
 templates/profile657/signup.html
 templates/profile657/update_email.html
