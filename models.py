@@ -12,6 +12,9 @@ class Key(models.Model):
     password = models.CharField(
         max_length=128, verbose_name='Password', null=True, blank=True
     )
+    invites = models.PositiveIntegerField(
+        null=True, blank=True, help_text="Number of invites. Leave empty for unlimitet."
+    )
     site = models.ForeignKey(
         Site, on_delete=models.CASCADE, related_name='+', null=True, blank=True
     )

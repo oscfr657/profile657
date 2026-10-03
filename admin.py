@@ -5,9 +5,9 @@ from .models import Key, PasswordDelegation
 
 @admin.register(Key)
 class KeyAdmin(admin.ModelAdmin):
-    list_display = ('id', 'startdate', 'enddate', 'is_active')
+    list_display = ('id', 'startdate', 'enddate', 'is_active', 'invites')
     list_display_links = ('id', 'startdate')
-    list_filter = ('startdate', 'enddate')
+    list_filter = ('invites', 'startdate', 'enddate')
     search_fields = ('password',)
 
     @admin.display(description='Currently active', boolean=True)
