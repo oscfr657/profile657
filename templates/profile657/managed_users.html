@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <div>
+    <a href="{% url 'profile657:profile' %}">Back to Profile</a>
     <h2>Users You Manage</h2>
     {% if delegations %}
         <p>Below is a list of users who have granted you permission to reset their password.</p>
@@ -13,7 +13,7 @@
                         <br>
                         <small>{{ delegation.user.email }}</small>
                     </div>
-                    <a href="{% url 'reset_delegated_password' delegation.user.id %}">
+                    <a href="{% url 'profile657:reset_delegated_password' delegation.user.id %}">
                         Change Password
                     </a>
                 </li>
