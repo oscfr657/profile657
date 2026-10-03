@@ -84,7 +84,7 @@ class CustomLoginView(LoginView):
             is_signup_locked = False
         context['is_signup_locked'] = is_signup_locked
         return context
-    
+
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect(f'profile657:profile')

@@ -10,7 +10,6 @@ from .views import (
     reset_delegated_password_view,
 )
 
-
 app_name = 'profile657'
 
 urlpatterns = [
@@ -57,9 +56,7 @@ urlpatterns = [
     ),
     path(
         'logout/',
-        auth_views.LogoutView.as_view(
-            template_name='profile657/logged_out.html'
-            ),
+        auth_views.LogoutView.as_view(template_name='profile657/logged_out.html'),
         name='logout',
     ),
 ]
