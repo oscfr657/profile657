@@ -1,13 +1,9 @@
 {% extends "base.html" %}
-
 {% block content %}
-
   <h1>Login{% if not is_signup_locked %} or Sign up{% endif %}!</h1>
-
   {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>
   {% endif %}
-
   {% if next %}
     {% if user.is_authenticated %}
       <p>Your account doesn't have access to this page. To proceed,
@@ -16,10 +12,8 @@
       <p>Please login to see this page.</p>
     {% endif %}
   {% endif %}
-  
   <h2>Login</h2>
-
-  <form method="post" action="{% url 'login' %}">
+  <form method="post" action="{% url 'profile657:login' %}">
     {% csrf_token %}
     <table>
       <tr>
@@ -34,12 +28,9 @@
     <input type="submit" value="login">
     <input type="hidden" name="next" value="{{ next }}">
   </form>
-
-  {# Assumes you set up the password_reset view in your URLConf #}
-  <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
+  <p><a href="{% url 'profile657:password_reset' %}">Lost password?</a></p>
   {% if not is_signup_locked %}
     <h2>or Sign up!</h2>
-    <p><a href="{% url 'signup' %}">Here</a></p>
+    <p><a href="{% url 'profile657:signup' %}">Here</a></p>
   {% endif %}
 {% endblock %}
