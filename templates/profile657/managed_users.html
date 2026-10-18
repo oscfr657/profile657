@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
+{% block extra_head %}
+{% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile657/base.css' %}" >
+{% endblock extra_head %}
 {% block content %}
-<div>
+<div class="profile657">
     <a href="{% url 'profile657:profile' %}">Back to Profile</a>
     <h2>Users You Manage</h2>
     {% if delegations %}

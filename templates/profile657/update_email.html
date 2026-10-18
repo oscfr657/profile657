@@ -1,17 +1,25 @@
 {% extends 'base.html' %}
+{% block extra_head %}
+{% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile657/base.css' %}" >
+{% endblock extra_head %}
 {% block content %}
-  <h2>Update E-mail</h2>
-  {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-        <li {% if message.tags %}class="{{ message.tags }}"{% endif %} >{{ message }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-    <button onclick="window.history.back()">Cancel</button>
-  </form>
+    <div class="profile657">
+        <h2>Update E-mail</h2>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %}class="{{ message.tags }}"{% endif %} >{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+            <button onclick="window.history.back()">Cancel</button>
+        </form>
+    </div>
 {% endblock %}

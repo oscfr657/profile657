@@ -1,10 +1,18 @@
 {% extends "base.html" %}
+{% block extra_head %}
+{% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile657/base.css' %}" >
+{% endblock extra_head %}
 {% block content %}
-<h1>Sign up</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form }}
-  <button type="submit">Sign Up</button>
-  <button onclick="window.history.back()">Cancel</button>
-</form>
+    <div class="profile657">
+        <h1>Sign up</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">Sign Up</button>
+            <button onclick="window.history.back()">Cancel</button>
+        </form>
+    </div>
 {% endblock %}

@@ -1,22 +1,30 @@
 {% extends "base.html" %}
+{% block extra_head %}
+{% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile657/base.css' %}" >
+{% endblock extra_head %}
 {% block content %}
-    <h2>Profile</h2>
-    <p>You are logged in as: <strong>{{ user.username }}</strong>.</p>
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Log out</button>
-    </form>
-    <ul>
-        <li>
-            <a href="{% url 'profile657:update_email' %}">Update email</a>
-        </li>
-        <li>
-            <a href="{% url 'profile657:password_reset' %}">Reset password</a>
-        </li>
-        {% if delegation_on %}
-        <li>
-            <a href="{% url 'profile657:managed_users' %}">Help users</a>
-        </li>
-        {% endif %}
-    </ul>
+    <div class="profile657">
+        <h2>Profile</h2>
+        <p>You are logged in as: <strong>{{ user.username }}</strong>.</p>
+        <ul style="margin: 0px auto; width: fit-content;">
+            <li>
+                <a href="{% url 'profile657:update_email' %}">Update email</a>
+            </li>
+            <li>
+                <a href="{% url 'profile657:password_reset' %}">Reset password</a>
+            </li>
+            {% if delegation_on %}
+            <li>
+                <a href="{% url 'profile657:managed_users' %}">Help users</a>
+            </li>
+            {% endif %}
+        </ul>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Log out</button>
+        </form>
+    </div>
 {% endblock %}
