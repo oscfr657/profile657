@@ -25,6 +25,7 @@ views.py
 ./migrations/0005_passworddelegation.py
 ./migrations/0006_key_invites.py
 ./migrations/__init__.py
+./static/css/profile657/base.css
 ./templates/profile657/logged_out.html
 ./templates/profile657/login.html
 ./templates/profile657/managed_users.html
@@ -49,6 +50,7 @@ profile657.egg-info/SOURCES.txt
 profile657.egg-info/dependency_links.txt
 profile657.egg-info/requires.txt
 profile657.egg-info/top_level.txt
+static/css/profile657/base.css
 templates/profile657/logged_out.html
 templates/profile657/login.html
 templates/profile657/managed_users.html
