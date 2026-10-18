@@ -4,6 +4,12 @@
 
 ## commits ##
 
+### 18 Okt 2026 ###
+
+    docs: updated CHANGELOG
+    build: version 0.6.1a0
+    feat: improved design with small template changes and added css
+
 ### 04 Okt 2026 ###
 
     docs: updated CHANGELOG
