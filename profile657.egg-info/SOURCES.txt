@@ -24,6 +24,7 @@ views.py
 ./migrations/0004_alter_key_site.py
 ./migrations/0005_passworddelegation.py
 ./migrations/0006_key_invites.py
+./migrations/0007_service.py
 ./migrations/__init__.py
 ./static/css/profile657/base.css
 ./templates/profile657/logged_out.html
@@ -44,6 +45,7 @@ migrations/0003_rename_lock_key.py
 migrations/0004_alter_key_site.py
 migrations/0005_passworddelegation.py
 migrations/0006_key_invites.py
+migrations/0007_service.py
 migrations/__init__.py
 profile657.egg-info/PKG-INFO
 profile657.egg-info/SOURCES.txt

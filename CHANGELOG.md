@@ -4,6 +4,13 @@
 
 ## commits ##
 
+### 16 Nov 2026 ###
+
+    build: 0.7.0a0
+    fix: password reset form.as_p
+    feat: added services to profile view and template
+    feat: created a Service model with a modelAdmin
+
 ### 18 Okt 2026 ###
 
     docs: updated CHANGELOG
