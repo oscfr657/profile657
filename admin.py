@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils import timezone
-from .models import Key, PasswordDelegation
+from .models import Key, PasswordDelegation, Service
 
 
 @admin.register(Key)
@@ -36,3 +36,13 @@ class PasswordDelegationAdmin(admin.ModelAdmin):
     @admin.display(description="Trusted User Email")
     def get_trusted_user_email(self, obj):
         return obj.trusted_user.email
+
+
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'site', 'created_at')
+    list_display_links = ('name',)
+    list_filter = ('site', 'name')
+    search_fields = ('name', 'slug')
+    prepopulated_fields = {'slug': ('name',)}
+    filter_horizontal = ('subscribers',)

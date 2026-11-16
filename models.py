@@ -7,6 +7,9 @@ User = get_user_model()
 
 
 class Key(models.Model):
+    site = models.ForeignKey(
+        Site, on_delete=models.CASCADE, related_name='+', null=True, blank=True
+    )
     startdate = models.DateTimeField(verbose_name='Start date')
     enddate = models.DateTimeField(verbose_name='End date', null=True, blank=True)
     password = models.CharField(
@@ -14,9 +17,6 @@ class Key(models.Model):
     )
     invites = models.PositiveIntegerField(
         null=True, blank=True, help_text="Number of invites. Leave empty for unlimitet."
-    )
-    site = models.ForeignKey(
-        Site, on_delete=models.CASCADE, related_name='+', null=True, blank=True
     )
 
     def save(self, *args, **kwargs):
@@ -39,3 +39,28 @@ class PasswordDelegation(models.Model):
         return (
             f"{self.trusted_user.username} manages passwords for {self.user.username}"
         )
+
+
+class Service(models.Model):
+    site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='+')
+    name = models.CharField(max_length=255, verbose_name="Service name")
+    slug = models.SlugField(blank=True)
+    subscribers = models.ManyToManyField(
+        User,
+        related_name='+',
+        verbose_name="Subscribers",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (('name', 'site'), ('slug', 'site'))
+        verbose_name = "Service"
+        verbose_name_plural = "Services"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name} ({self.site.domain})"
