@@ -8,8 +8,13 @@
 {% block content %}
     <div class="profile657">
         <h2>Profile</h2>
-        <p>You are logged in as: <strong>{{ user.username }}</strong>.</p>
+        <p>You are logged in as: <strong>{{ user.username }}</strong></p>
         <ul style="margin: 0px auto; width: fit-content;">
+            {% for service in services %}
+            <li>
+                <a href="/{{ service.slug }}/">{{ service.name }}</a>
+            </li>
+            {% endfor %}
             <li>
                 <a href="{% url 'profile657:update_email' %}">Update email</a>
             </li>

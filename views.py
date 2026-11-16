@@ -14,7 +14,7 @@ from django.contrib.sites.shortcuts import get_current_site
 
 from django.contrib import messages
 
-from .models import PasswordDelegation
+from .models import PasswordDelegation, Service
 from .forms import EmailUpdateForm, CustomUserCreationForm
 from .utils import get_current_key
 
@@ -121,8 +121,16 @@ class CustomLoginView(LoginView):
 
 @login_required
 def profile_view(request):
-    delegation_on = getattr(settings, 'PROFILE657_PASSWORD_DELEGATION', False)
-    return render(request, 'profile657/profile.html', {delegation_on: delegation_on})
+    current_site = get_django_site(request)
+    services = Service.objects.filter(site=current_site, subscribers=request.user)
+    delegation_on = PasswordDelegation.objects.filter(
+        trusted_user=request.user
+    ).exists() and getattr(settings, 'PROFILE657_PASSWORD_DELEGATION', False)
+    return render(
+        request,
+        'profile657/profile.html',
+        {'delegation_on': delegation_on, 'services': services},
+    )
 
 
 @login_required
